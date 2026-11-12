@@ -31,8 +31,12 @@
 
 (defrule unknown-material
    (declare (salience -10))
-   (burning-material (name ?m))
-   (not (fire))
+;; матеріал, якого немає в жодному з класів; перевіряється для кожного
+;; факту окремо, тому спрацьовує й тоді, коли поруч горить відомий матеріал
+   (burning-material
+      (name ?m&~paper&~wood&~cloth&~oil&~gas&~grease&~gasoline
+               &~energized-electrical-equipment
+               &~magnesium&~sodium&~potassium))
    =>
    (printout t
       "Material " ?m " is unknown, the fire class cannot be found." crlf))
